@@ -1,0 +1,185 @@
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <meta charset="utf-8">
+        <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+        <title>Calcolo Bollette</title>
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    </head>
+    <body>
+
+        <div class="row m-1">
+            <div class="col-md-4">
+                Seleziona Numero Inquilini:
+                <select id='numInquilini'>
+                    <option selected value="0">Seleziona</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                Totale Bolletta:
+                <input id= "totBolletta" type="number" maxlength="10" step=".01">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                Date Bolletta:
+                da<input id="inizioBolletta" class="datepicker" data-date-format="dd/mm/yyyy"> a <input id="fineBolleta" class="datepicker" data-date-format="dd/mm/yyyy">
+            </div>
+        </div>
+
+        <div id ="contenitoreInquilini" class="mt-2">
+            
+        </div>
+
+        <div id ="spazioRisultato" class="m-2">
+            
+        </div>
+        <div class="d-flex">
+           <button onclick="calcola()" style="margin:0 auto">Calcola Tutto</button>
+        </div>
+    
+
+
+        <script>
+           $( document ).ready(function() {
+                console.log( "ready!" );
+                $('.datepicker').datepicker({
+                    format: "dd/mm/yyyy"
+                });
+                
+                $("#numInquilini").change(function(){
+                    var numInquilini = $("#numInquilini").val();
+                    console.log(numInquilini);
+                    // if(numInquilini != 0){
+                        creaInquilini(numInquilini)
+                    // }
+                })
+
+            });
+
+            function prezzoGiorno(totBolletta){
+                var a = $("#inizioBolletta").datepicker('getDate').getTime();
+                var b = $("#fineBolleta").datepicker('getDate').getTime();
+                var c = 24*60*60*1000;
+                var diffDays = Math.round(Math.abs((a - b)/(c)));
+                diffDays++;
+
+                return totBolletta/diffDays;
+            }
+
+            function creaInquilini(numInq){
+                var stringaInq = "";  
+                for(i=1;i<=numInq;i++){
+                    stringaInq +='<div id="inquilino_'+i+'" class="inquilino m-1 border">';
+                    stringaInq +='<div class="row">';
+                    stringaInq +='<div class="col-md-6">';
+                    stringaInq +=    'Nome: <input id="nome_'+i+'" maxlength="10">';
+                    stringaInq += '</div>';
+                    stringaInq += ' <div class="col-md-6">'
+                    stringaInq +=    'Aggiungi Date: <button class="addDateInquilino" id="addDateInquilino_'+i+'">+</button>'
+                    stringaInq +='</div>'
+                    stringaInq +='</div>'
+                    stringaInq +='<div id="dateInquilino_'+i+'">'
+                    stringaInq +='<div class="row m-1">'
+                    stringaInq += 'da<input id="dataInit_inquilino'+i+'_0" class="datepicker1 dataInit_inquilino'+i+'" data-date-format="dd/mm/yyyy"> a <input id="dataFine_inquilino'+i+'_0" class="datepicker1 dataFine_inquilino'+i+'" data-date-format="dd/mm/yyyy">'
+                    stringaInq +='</div></div></div>'
+                }
+                $("#contenitoreInquilini").html(stringaInq);
+
+                $('.datepicker1').datepicker({
+                    format: "dd/mm/yyyy"
+                });
+
+                $(".addDateInquilino").unbind();
+                $(".addDateInquilino").click(function(){
+                    console.log("hello", this.id)
+                    var numInquilino = this.id.split('_')[1];
+
+                    var numDate= $(".dataInit_inquilino"+numInquilino).length;
+                    console.log(numDate);
+
+                    var stringaDate= '<div class="row m-1">';
+                    stringaDate += 'da<input id="dataInit_inquilino'+numInquilino+'_'+numDate+'" class="datepicker dataInit_inquilino'+numInquilino+'" data-date-format="dd/mm/yyyy"> a <input id="dataFine_inquilino'+numInquilino+'_'+numDate+'" class="datepicker dataFine_inquilino'+numInquilino+'" data-date-format="dd/mm/yyyy">';
+                    stringaDate +='</div></div></div>';
+
+                    $("#dateInquilino_"+numInquilino).append(stringaDate);
+
+                    $('#dataInit_inquilino'+numInquilino+'_'+numDate).datepicker({
+                        format: "dd/mm/yyyy"
+                        });
+                    
+                    $('#dataFine_inquilino'+numInquilino+'_'+numDate).datepicker({
+                        format: "dd/mm/yyyy"
+                    });
+
+                });
+            }
+
+            function totGiorniInquilino(numInquilino){
+                var totGiorni = 0;
+                var numDate= $(".dataInit_inquilino"+numInquilino).length;
+                console.log(numDate);
+
+                for(i=0; i<numDate; i++){
+                    var dataInit= $('#dataInit_inquilino'+numInquilino+'_'+i).datepicker('getDate').getTime();
+                    var dataFine= $('#dataFine_inquilino'+numInquilino+'_'+i).datepicker('getDate').getTime();
+                    var c = 24*60*60*1000;
+                    var diffDays = Math.round(Math.abs((dataInit - dataFine)/(c)));
+                    totGiorni+= diffDays;
+                }
+
+                return totGiorni;
+            }
+
+            function totInquilino(numInquilino){
+                var totBolletta = $("#totBolletta").val();
+                
+                var a = $("#inizioBolletta").datepicker('getDate').getTime();
+                var b = $("#fineBolleta").datepicker('getDate').getTime();
+                var c = 24*60*60*1000;
+                var diffDays = Math.round(Math.abs((a - b)/(c)));
+                diffDays++;
+
+                var durataBolletta = diffDays;
+
+                var numInquilini = $("#numInquilini").val();
+
+                var totaleTuttiCoinq = 0;
+
+                for(j=1; j<=numInquilini; j++){
+                    console.log(j);
+                    totaleTuttiCoinq+=totGiorniInquilino(j);
+                }
+
+
+                return ((totBolletta/(totaleTuttiCoinq))*totGiorniInquilino(numInquilino))
+            }
+
+            //(totaleBolletta/(durataBolletta * numCoinquilini))*numGiorniInquilino
+
+            function calcola(){
+                var strtringTot = '';
+                var numInquilini = $("#numInquilini").val();
+                for(x=1; x<=numInquilini; x++){
+                    strtringTot+= '<div class="row m-2">';
+                    strtringTot+= '<h2>Totale '+$('#nome_'+x).val()+': ';
+                    strtringTot+= totInquilino(x)+'</h2>';
+                    strtringTot+= '</div>';
+                }
+                $('#spazioRisultato').html(strtringTot);
+            }
+
+        </script>
+    </body>
+</html>
