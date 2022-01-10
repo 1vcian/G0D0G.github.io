@@ -25,14 +25,16 @@
         soldi.forEach(x=>{
           totaleTuo+=x.tuo
           totaleTot+=x.tot
-          righe+="<h3 style='margin:0 auto; color:white'>Hai pagato <b  style='color:red;display:contents!important'>"+x.tot.toString() +"€</b> di cui <b  style='color:green;display:contents!important'>" +x.tuo.toString() + "€</b> tuoi in data: <b  style='color:blue;display:contents!important'>"+dateFormat(x.time, "dd/mm/yyyy hh:MM") +"</b> <button  type=\"button\" class=\"btn btn-danger\" onclick='eliminaIndice("+ind.toString()+")'><b>-</b></button> </h3>"
+          righe+="<div style='width: auto;  margin: 0 auto;'><div style='display:flex'><h3 style='margin:0 auto;    margin-right: 2em;    width: fit-content; color:white'>Hai pagato <b  style='color:orange;display:contents!important'>"+x.tot.toString() +"€</b> di cui <b  style='color:red;display:contents!important'>" +x.tuo.toString() + "€</b> tuoi e prelevato <b  style='color:green;display:contents!important'>"+(x.tot-x.tuo).toString() +"€</b>  in data: <b  style='color:blue;display:contents!important'>"+dateFormat(x.time, "dd/mm/yyyy hh:MM") +"</b></h3>&emsp;<button  type=\"button\" class=\"btn btn-danger\" onclick='eliminaIndice("+ind.toString()+")'><b>-</b></button> </div></div><br>"
 
           ind+=1
         })
-        let stringa="Su un totale di <h1 style='color:red;display:contents!important'>"
+        let stringa="Su un totale di <h1 style='color:orange;display:contents!important'>"
         stringa+=totaleTot.toString()
-        stringa+="</h1>€ hai prelevato <h1 style='color:green;display:contents!important'>"
+        stringa+="</h1>€ hai utilizzato <h1 style='color:red;display:contents!important'>"
         stringa+=totaleTuo.toString()
+        stringa+="</h1>€ e prelevato <h1 style='color:green;display:contents!important'>"
+        stringa+=(totaleTot-totaleTuo).toString()
         stringa+="</h1>€"
         console.log(stringa)
 
