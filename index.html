@@ -31,11 +31,11 @@
         })
         let stringa="Su un totale di <h1 style='color:orange;display:contents!important'>"
         stringa+=totaleTot.toString()
-        stringa+="</h1>€ hai utilizzato <h1 style='color:red;display:contents!important'>"
+        stringa+="€</h1> hai utilizzato <h1 style='color:red;display:contents!important'>"
         stringa+=totaleTuo.toString()
-        stringa+="</h1>€ e prelevato <h1 style='color:green;display:contents!important'>"
+        stringa+="€</h1> e prelevato <h1 style='color:green;display:contents!important'>"
         stringa+=(totaleTot-totaleTuo).toString()
-        stringa+="</h1>€"
+        stringa+="€</h1>"
         console.log(stringa)
 
         $("#resoconto").html(stringa)
