@@ -12,5 +12,5 @@ A simple web app using HTML, CSS, JavaScript, and Bootstrap to track shared expe
 HTML5, CSS3, Bootstrap 4.4.1, JavaScript, jQuery
 
 
-[Try it here](https://1vcian.github.io/G0D0G.github.io/)
+[Try it here](https://1vcian.github.io/Withdrawn-Money/)
 
